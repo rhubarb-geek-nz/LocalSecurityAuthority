@@ -3,12 +3,43 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>LocalSecurityAuthority</AssemblyName>
+    <Copyright>Copyright &#169; 2023 Roger Brown</Copyright>
+    <Version>1.0.0</Version>
+    <AssemblyTitle>PowerShell Cmdlets for LocalSecurityAuthority</AssemblyTitle>
+    <Product>LocalSecurityAuthority for PowerShell</Product>
+    <Company>rhubarb-geek-nz</Company>
+    <PackageId>rhubarb-geek-nz.LocalSecurityAuthority</PackageId>
+    <Title>LocalSecurityAuthority for PowerShell</Title>
+    <Description>Local Security Authority Tools</Description>
+    <Authors>Roger Brown</Authors>
+    <PackageProjectUrl>https://github.com/rhubarb-geek-nz/LocalSecurityAuthority</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rhubarb-geek-nz/LocalSecurityAuthority.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>LocalSecurityAuthority</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <Target Name="Package" AfterTargets="Publish" Condition=" '$(Configuration)' == 'Release' ">
+    <ItemGroup>
+      <FilesToDelete Include="$(PublishDir)$(AssemblyName).deps.json" />
+      <FilesToDelete Include="$(PublishDir)$(AssemblyName).pdb" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <Exec Command="pwsh ./package.ps1 $(AssemblyName) $(PublishDir)" />
+  </Target>
 
 </Project>
