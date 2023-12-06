@@ -39,7 +39,8 @@
       <FilesToDelete Include="$(PublishDir)$(AssemblyName).pdb" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
-    <Exec Command="pwsh ./package.ps1 $(AssemblyName) $(PublishDir)" />
+    <Exec Command="dotnet tool restore" />
+    <Exec Command="dotnet pwsh -ExecutionPolicy Bypass -File ./package.ps1 $(AssemblyName) $(PublishDir)" />
   </Target>
 
 </Project>
